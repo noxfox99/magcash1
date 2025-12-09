@@ -2,36 +2,43 @@ import { useEffect, useState } from "react";
 import Login from "./components/Login";
 import WalletGenerator from "./components/WalletGenerator";
 
-const STORAGE_KEY = "tron_panel_is_authenticated";
+const STORAGE_KEY = "tron_is_auth";
 
-export default function App(){
-  const [isAuthenticated,setAuth]=useState(false);
+export default function App() {
+  const [auth, setAuth] = useState(false);
 
-  useEffect(()=>{
-    if(localStorage.getItem(STORAGE_KEY)==="true") setAuth(true);
-  },[]);
+  useEffect(() => {
+    if (localStorage.getItem(STORAGE_KEY) === "true") {
+      setAuth(true);
+    }
+  }, []);
 
-  const login=()=>{
-    localStorage.setItem(STORAGE_KEY,"true");
+  const onLogin = () => {
+    localStorage.setItem(STORAGE_KEY, "true");
     setAuth(true);
   };
 
-  const logout=()=>{
+  const logout = () => {
     localStorage.removeItem(STORAGE_KEY);
     setAuth(false);
   };
 
-  return(
+  return (
     <div className="app-root">
-      {isAuthenticated ? (
+      {auth ? (
         <>
+          {/* Хедер только с кнопкой "Выйти" справа */}
           <header className="panel-header">
-            <span>TRON Wallet Panel</span>
-            <button className="btn-ghost" onClick={logout}>Выйти</button>
+            <button onClick={logout} className="btn-ghost">
+              Выйти
+            </button>
           </header>
-          <WalletGenerator/>
+
+          <WalletGenerator />
         </>
-      ) : <Login onLoginSuccess={login}/>}
+      ) : (
+        <Login onLoginSuccess={onLogin} />
+      )}
     </div>
   );
 }
