@@ -1,25 +1,43 @@
 import { useState } from "react";
 import { AUTH_CONFIG } from "../services/authConfig";
 
-export default function Login({onLoginSuccess}){
-  const [u,setU]=useState("");
-  const [p,setP]=useState("");
-  const [err,setErr]=useState("");
+export default function Login({ onLoginSuccess }) {
+  const [user, setUser] = useState("");
+  const [pass, setPass] = useState("");
+  const [error, setError] = useState("");
 
-  const submit=e=>{
+  const submit = (e) => {
     e.preventDefault();
-    if(u===AUTH_CONFIG.USERNAME && p===AUTH_CONFIG.PASSWORD){
+
+    if (user === AUTH_CONFIG.USERNAME && pass === AUTH_CONFIG.PASSWORD) {
       onLoginSuccess();
-    } else setErr("Неверный логин или пароль");
+    } else {
+      setError("Неверный логин или пароль");
+    }
   };
 
-  return(
+  return (
     <form className="card" onSubmit={submit}>
-      <h1>Вход</h1>
-      <input className="input" placeholder="Логин" value={u} onChange={e=>setU(e.target.value)}/>
-      <input className="input" type="password" placeholder="Пароль" value={p} onChange={e=>setP(e.target.value)}/>
-      {err && <div className="alert-error">{err}</div>}
+      {/* Заголовок "Вход" убран по твоему запросу */}
+
+      <input
+        className="input"
+        placeholder="Логин"
+        value={user}
+        onChange={(e) => setUser(e.target.value)}
+      />
+
+      <input
+        className="input"
+        placeholder="Пароль"
+        type="password"
+        value={pass}
+        onChange={(e) => setPass(e.target.value)}
+      />
+
+      {error && <div className="alert-error">{error}</div>}
+
       <button className="btn-primary">Войти</button>
     </form>
-  )
+  );
 }
